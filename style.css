@@ -369,37 +369,3 @@ thead th.player-col {
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.25);
 }
-
-/* Force Landscape Layout Visually */
-@media screen and (max-width: 1000px) and (orientation: portrait) {
-    html, body {
-        width: 100dvw;
-        height: 100dvh;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-    }
-    
-    .app-container {
-        position: absolute;
-        top: 0;
-        left: 100dvw;
-        width: 100dvh;
-        height: 100dvw;
-        /* Rotación matemática exacta pivotando desde la esquina superior izquierda */
-        transform-origin: top left;
-        transform: rotate(90deg);
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: 1.5rem 1rem;
-        box-sizing: border-box;
-        display: block; /* Quitamos flex para evitar bugs de cálculo en rotación */
-    }
-
-    .table-container {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch; /* Suavidad en móviles */
-    }
-}
