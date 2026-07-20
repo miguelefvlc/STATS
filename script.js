@@ -350,3 +350,10 @@ document.getElementById('refresh-btn-2').addEventListener('click', () => refresh
 // Initial Load
 refreshTable(playerUrls1, 'stats-body-1', 'refresh-btn-1');
 refreshTable(playerUrls2, 'stats-body-2', 'refresh-btn-2');
+
+// Attempt to lock screen orientation to landscape
+if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('landscape').catch(function(error) {
+        console.log("No se pudo bloquear la orientación (es normal en algunos navegadores):", error);
+    });
+}
