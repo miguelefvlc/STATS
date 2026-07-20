@@ -369,3 +369,50 @@ thead th.player-col {
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.25);
 }
+
+/* Force Landscape Overlay */
+#rotate-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 9999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+#rotate-overlay svg {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    animation: rotatePhone 2s infinite ease-in-out;
+}
+
+#rotate-overlay p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.5;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes rotatePhone {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-90deg); }
+    100% { transform: rotate(-90deg); }
+}
+
+@media screen and (max-width: 900px) and (orientation: portrait) {
+    #rotate-overlay {
+        display: flex;
+    }
+    .app-container {
+        display: none !important;
+    }
+}
