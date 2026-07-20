@@ -370,49 +370,27 @@ thead th.player-col {
     background: rgba(255, 255, 255, 0.25);
 }
 
-/* Force Landscape Overlay */
-#rotate-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--bg-color);
-    z-index: 9999;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-}
-
-#rotate-overlay svg {
-    color: var(--accent-color);
-    margin-bottom: 1rem;
-    animation: rotatePhone 2s infinite ease-in-out;
-}
-
-#rotate-overlay p {
-    font-size: 1.2rem;
-    font-weight: 600;
-    line-height: 1.5;
-    background: linear-gradient(135deg, #60a5fa, #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-@keyframes rotatePhone {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(-90deg); }
-    100% { transform: rotate(-90deg); }
-}
-
-@media screen and (max-width: 900px) and (orientation: portrait) {
-    #rotate-overlay {
-        display: flex;
+/* Force Landscape Layout Visually */
+@media screen and (max-width: 1000px) and (orientation: portrait) {
+    html, body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
     }
+    
     .app-container {
-        display: none !important;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100vh;
+        height: 100vw;
+        /* Rotamos el contenedor 90 grados para que se vea apaisado */
+        transform: translate(-50%, -50%) rotate(90deg);
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 1.5rem 1rem;
+        box-sizing: border-box;
     }
 }
