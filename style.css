@@ -1,0 +1,371 @@
+:root {
+    --bg-color: #0f172a;
+    --panel-bg: rgba(30, 41, 59, 0.75);
+    --panel-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #3b82f6;
+    --accent-hover: #60a5fa;
+    --success-color: #10b981;
+    --error-color: #f43f5e;
+    --row-hover: rgba(255, 255, 255, 0.06);
+    --row-alt: rgba(255, 255, 255, 0.035);
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: 
+        radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.06), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.06), transparent 25%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+header {
+    text-align: center;
+}
+
+h1, h2 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.controls {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+    outline: none;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    backdrop-filter: blur(10px);
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn.primary {
+    background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
+    border-color: rgba(96, 165, 250, 0.3);
+    color: #e2e8f0;
+}
+
+.btn.primary:hover {
+    background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(139,92,246,0.3));
+    border-color: rgba(96, 165, 250, 0.5);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.glass-panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+.table-container {
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+table {
+    width: max-content;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 0 auto;
+}
+
+thead th {
+    padding: 0.1rem 0.15rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #8b8b93;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--panel-border);
+    background: rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 0.1rem 0.15rem;
+    font-size: 0.75rem;
+    border-bottom: 1px solid var(--panel-border);
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--row-alt);
+}
+
+tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: var(--row-hover);
+    box-shadow: inset 2px 0 0 var(--accent-color);
+}
+
+.player-col {
+    text-align: left;
+    padding-left: 0.3rem !important;
+    padding-right: 0.5rem;
+    width: max-content;
+    white-space: nowrap;
+    position: sticky;
+    left: 0;
+    z-index: 4;
+    background-color: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid var(--panel-border);
+}
+
+thead th.player-col {
+    z-index: 6;
+    background-color: rgba(20, 25, 35, 0.95);
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.player-img {
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    object-fit: contain;
+    transform: scale(1.25);
+    transform-origin: bottom center;
+    border: none;
+}
+
+.player-name {
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.player-team {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    vertical-align: middle;
+}
+
+.status-success {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: var(--success-color);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-error {
+    background-color: rgba(244, 63, 94, 0.15);
+    color: var(--error-color);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.pts-col {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.val-col {
+    text-align: center;
+}
+
+.rating-badge {
+    display: inline-block;
+    padding: 0.2rem 0;
+    min-width: 44px;
+    text-align: center;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.custom-tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.custom-tooltip[data-tooltip]:hover::after,
+.custom-tooltip[data-tooltip]:active::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-8px);
+    background: rgba(15, 23, 42, 0.95);
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 100;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    pointer-events: none;
+    animation: fadeInTooltip 0.15s ease-out forwards;
+}
+
+@keyframes fadeInTooltip {
+    from { opacity: 0; transform: translateY(-50%) translateX(0); }
+    to { opacity: 1; transform: translateY(-50%) translateX(-8px); }
+}
+
+/* Skeleton Loading */
+.skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+.skeleton-text {
+    height: 0.8rem;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.skeleton-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}

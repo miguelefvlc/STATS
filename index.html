@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas NBA</title>
+    <!-- Google Fonts: Inter & Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1><span class="gradient-text">STATS</span> TRACKER</h1>
+            <p>PARTIDO A PARTIDO</p>
+        </header>
+        
+        <div class="controls">
+            <button id="refresh-btn-1" class="btn primary">
+                <svg class="icon refresh-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <span>Refrescar</span>
+            </button>
+        </div>
+
+        <div class="table-container glass-panel">
+            <table id="stats-table-1">
+                <thead>
+                    <tr>
+                        <th class="player-col">Jugador</th>
+                        <th>FECHA</th>
+                        <th title="Oponente">OP</th>
+                        <th title="Resultado del Partido">RES</th>
+                        <th title="Minutos Jugados">MIN</th>
+                        <th title="Tiros de Campo Anotados/Intentados">FG</th>
+                        <th title="Porcentaje de Tiros de Campo">FG%</th>
+                        <th title="Triples Anotados/Intentados">3PT</th>
+                        <th title="Porcentaje de Triples">3P%</th>
+                        <th title="Tiros Libres Anotados/Intentados">FT</th>
+                        <th title="Porcentaje de Tiros Libres">FT%</th>
+                        <th title="Rebotes">REB</th>
+                        <th title="Asistencias">ASIS</th>
+                        <th title="Tapones (Blocks)">BLK</th>
+                        <th title="Robos (Steals)">STL</th>
+                        <th title="Faltas Personales">PF</th>
+                        <th title="Pérdidas de Balón (Turnovers)">TO</th>
+                        <th title="Puntos">PTS</th>
+                        <th title="Valoración (Eficiencia)">VAL</th>
+                    </tr>
+                </thead>
+                <tbody id="stats-body-1">
+                    <!-- Filas generadas dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SEGUNDA TABLA: SEGUIMIENTO -->
+        <header style="margin-top: 2rem;">
+            <h2><span class="gradient-text">SEGUIMIENTO</span></h2>
+        </header>
+
+        <div class="controls">
+            <button id="refresh-btn-2" class="btn primary">
+                <svg class="icon refresh-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <span>Refrescar Seguimiento</span>
+            </button>
+        </div>
+
+        <div class="table-container glass-panel">
+            <table id="stats-table-2">
+                <thead>
+                    <tr>
+                        <th class="player-col">Jugador</th>
+                        <th>FECHA</th>
+                        <th title="Oponente">OP</th>
+                        <th title="Resultado del Partido">RES</th>
+                        <th title="Minutos Jugados">MIN</th>
+                        <th title="Tiros de Campo Anotados/Intentados">FG</th>
+                        <th title="Porcentaje de Tiros de Campo">FG%</th>
+                        <th title="Triples Anotados/Intentados">3PT</th>
+                        <th title="Porcentaje de Triples">3P%</th>
+                        <th title="Tiros Libres Anotados/Intentados">FT</th>
+                        <th title="Porcentaje de Tiros Libres">FT%</th>
+                        <th title="Rebotes">REB</th>
+                        <th title="Asistencias">ASIS</th>
+                        <th title="Tapones (Blocks)">BLK</th>
+                        <th title="Robos (Steals)">STL</th>
+                        <th title="Faltas Personales">PF</th>
+                        <th title="Pérdidas de Balón (Turnovers)">TO</th>
+                        <th title="Puntos">PTS</th>
+                        <th title="Valoración (Eficiencia)">VAL</th>
+                    </tr>
+                </thead>
+                <tbody id="stats-body-2">
+                    <!-- Filas generadas dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito', reg))
+                    .catch(err => console.warn('Error al registrar Service Worker', err));
+            });
+        }
+    </script>
+</body>
+</html>
