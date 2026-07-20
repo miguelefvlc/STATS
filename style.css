@@ -373,8 +373,8 @@ thead th.player-col {
 /* Force Landscape Layout Visually */
 @media screen and (max-width: 1000px) and (orientation: portrait) {
     html, body {
-        width: 100vw;
-        height: 100vh;
+        width: 100dvw;
+        height: 100dvh;
         overflow: hidden;
         margin: 0;
         padding: 0;
@@ -382,15 +382,24 @@ thead th.player-col {
     
     .app-container {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100vh;
-        height: 100vw;
-        /* Rotamos el contenedor 90 grados para que se vea apaisado */
-        transform: translate(-50%, -50%) rotate(90deg);
+        top: 0;
+        left: 100dvw;
+        width: 100dvh;
+        height: 100dvw;
+        /* Rotación matemática exacta pivotando desde la esquina superior izquierda */
+        transform-origin: top left;
+        transform: rotate(90deg);
         overflow-y: auto;
         overflow-x: hidden;
         padding: 1.5rem 1rem;
         box-sizing: border-box;
+        display: block; /* Quitamos flex para evitar bugs de cálculo en rotación */
+    }
+
+    .table-container {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Suavidad en móviles */
     }
 }
