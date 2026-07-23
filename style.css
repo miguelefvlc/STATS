@@ -1,120 +1,179 @@
 :root {
-    --bg-color: #0f172a;
-    --panel-bg: rgba(30, 41, 59, 0.75);
-    --panel-border: rgba(255, 255, 255, 0.1);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --accent-color: #3b82f6;
-    --accent-hover: #60a5fa;
-    --success-color: #10b981;
-    --error-color: #f43f5e;
-    --row-hover: rgba(255, 255, 255, 0.06);
-    --row-alt: rgba(255, 255, 255, 0.035);
-    --font-heading: 'Outfit', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    --bg-color: #0c0e1c;
+    --container-bg: rgba(12, 14, 28, 0.85);
+    --panel-bg: rgba(0, 0, 0, 0.4);
+    --panel-border: rgba(0, 240, 255, 0.2);
+    
+    --text-primary: #e2e8f0;
+    --text-secondary: #8b9bb4;
+    
+    /* Neon Accents */
+    --cyan-neon: #00f0ff;
+    --cyan-dim: rgba(0, 240, 255, 0.15);
+    
+    --magenta-neon: #ff0055;
+    --magenta-dim: rgba(255, 0, 85, 0.15);
+    
+    --green-neon: #00ff9d;
+    --green-dim: rgba(0, 255, 157, 0.15);
+    
+    --purple-neon: #b000ff;
+    
+    --border-color: rgba(0, 240, 255, 0.3);
+    --border-glow: 0 0 10px rgba(0, 240, 255, 0.2), inset 0 0 10px rgba(0, 240, 255, 0.05);
+    
+    /* Re-map old STATS variables to new colors for script.js compatibility */
+    --success-color: var(--green-neon);
+    --error-color: var(--magenta-neon);
+    --accent-color: var(--cyan-neon);
+    --accent-hover: #5eead4;
+    
+    --row-hover: rgba(0, 240, 255, 0.08);
+    --row-alt: rgba(255, 255, 255, 0.02);
+    
+    --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: var(--font-body);
 }
 
 body {
     background-color: var(--bg-color);
-    background-image: 
-        radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.06), transparent 25%),
-        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.06), transparent 25%);
-    background-attachment: fixed;
     color: var(--text-primary);
+    font-family: var(--font-main);
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding: 1.5rem 1rem;
+    padding: 2rem 1.5rem;
+    /* Professional dashboard background pattern */
+    background-image: 
+        radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.04), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.03), transparent 25%),
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+    background-attachment: fixed;
 }
 
 .app-container {
-    width: 100%;
-    max-width: 1400px;
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.5rem;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.15);
 }
 
 header {
-    text-align: center;
+    text-align: left;
 }
 
 h1, h2 {
-    font-family: var(--font-heading);
-    letter-spacing: -0.03em;
+    font-family: var(--font-main);
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 h1 {
     font-size: 2.2rem;
     font-weight: 800;
     margin-bottom: 0.2rem;
+    color: var(--cyan-neon);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
 }
 
 h2 {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 800;
+    color: var(--cyan-neon);
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    /* Re-map gradient to match neon */
+    background: linear-gradient(135deg, var(--cyan-neon), var(--purple-neon));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 header p {
-    color: var(--text-secondary);
+    color: var(--cyan-neon);
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.8;
 }
 
+/* Controls & Buttons */
 .controls {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
+    font-family: var(--font-mono);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
     cursor: pointer;
-    transition: all 0.2s ease;
-    border: 1px solid rgba(255,255,255,0.1);
-    outline: none;
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-primary);
-    backdrop-filter: blur(10px);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
-    border-color: rgba(255, 255, 255, 0.2);
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: skewX(-25deg);
+    transition: left 0.5s ease;
+}
+
+.btn:hover::after {
+    left: 150%;
 }
 
 .btn.primary {
-    background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
-    border-color: rgba(96, 165, 250, 0.3);
-    color: #e2e8f0;
+    background-color: transparent;
+    color: var(--cyan-neon);
+    border: 1px solid var(--cyan-neon);
+    box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
 }
 
 .btn.primary:hover {
-    background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(139,92,246,0.3));
-    border-color: rgba(96, 165, 250, 0.5);
+    background-color: rgba(0, 240, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4), inset 0 0 10px rgba(0, 240, 255, 0.2);
+    transform: translateY(-1px);
 }
 
 .btn:active {
-    transform: translateY(0);
+    transform: scale(0.98);
 }
 
 .icon {
@@ -131,22 +190,33 @@ header p {
     to { transform: rotate(360deg); }
 }
 
+/* Glass panel redefined to Cyber panel */
 .glass-panel {
-    background: var(--panel-bg);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: rgba(8, 10, 20, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--panel-border);
     border-radius: 12px;
-    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), var(--border-glow);
     overflow: hidden;
 }
 
 .table-container {
-    width: max-content;
-    max-width: 100%;
-    margin: 0 auto;
+    width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+}
+
+.table-container::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+.table-container::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.5);
+}
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--cyan-neon);
+    border-radius: 10px;
 }
 
 table {
@@ -157,14 +227,14 @@ table {
 }
 
 thead th {
-    padding: 0.1rem 0.15rem;
+    padding: 0.2rem 0.4rem;
     font-size: 0.65rem;
-    font-weight: 700;
-    color: #8b8b93;
+    font-weight: 800;
+    color: var(--cyan-neon);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid var(--panel-border);
-    background: rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+    border-bottom: 1px dashed rgba(0, 240, 255, 0.3);
+    background: rgba(0, 0, 0, 0.6);
     position: sticky;
     top: 0;
     z-index: 5;
@@ -172,9 +242,10 @@ thead th {
 }
 
 tbody td {
-    padding: 0.1rem 0.15rem;
-    font-size: 0.75rem;
-    border-bottom: 1px solid var(--panel-border);
+    padding: 0.15rem 0.3rem;
+    font-size: 0.85rem;
+    font-family: var(--font-mono); /* Numbers in tech font */
+    border-bottom: 1px solid rgba(0, 240, 255, 0.1);
     white-space: nowrap;
 }
 
@@ -183,7 +254,7 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr {
-    transition: background-color 0.15s ease;
+    transition: background-color 0.2s ease;
 }
 
 tbody tr:last-child td {
@@ -192,52 +263,58 @@ tbody tr:last-child td {
 
 tbody tr:hover {
     background-color: var(--row-hover);
-    box-shadow: inset 2px 0 0 var(--accent-color);
+    box-shadow: inset 2px 0 0 var(--cyan-neon);
 }
 
 .player-col {
     text-align: left;
-    padding-left: 0.3rem !important;
-    padding-right: 0.5rem;
+    padding-left: 0.6rem !important;
+    padding-right: 0.8rem;
     width: max-content;
     white-space: nowrap;
     position: sticky;
     left: 0;
     z-index: 4;
-    background-color: rgba(30, 41, 59, 0.95);
-    backdrop-filter: blur(10px);
-    border-right: 1px solid var(--panel-border);
+    background: rgba(8, 10, 20, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-right: 1px dashed rgba(0, 240, 255, 0.3);
 }
 
 thead th.player-col {
     z-index: 6;
-    background-color: rgba(20, 25, 35, 0.95);
+    background: rgba(5, 7, 15, 0.98);
 }
 
 .player-info {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 .player-img {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     background-color: transparent;
     object-fit: contain;
-    transform: scale(1.25);
+    transform: scale(1.15);
     transform-origin: bottom center;
     border: none;
+    filter: drop-shadow(0 0 5px rgba(0,240,255,0.3)); /* Little cyber glow */
 }
 
 .player-name {
+    font-family: var(--font-main);
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: var(--text-primary);
     white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .player-team {
+    font-family: var(--font-mono);
     font-size: 0.65rem;
     color: var(--text-secondary);
     text-transform: uppercase;
@@ -248,27 +325,31 @@ thead th.player-col {
     display: inline-block;
     padding: 0.1rem 0.3rem;
     border-radius: 4px;
+    font-family: var(--font-mono);
     font-size: 0.6rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 1px;
     vertical-align: middle;
 }
 
 .status-success {
-    background-color: rgba(16, 185, 129, 0.15);
-    color: var(--success-color);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background-color: rgba(0, 255, 157, 0.1);
+    color: var(--green-neon);
+    border: 1px solid var(--green-neon);
+    box-shadow: 0 0 5px rgba(0,255,157,0.3);
 }
 
 .status-error {
-    background-color: rgba(244, 63, 94, 0.15);
-    color: var(--error-color);
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background-color: rgba(255, 0, 85, 0.1);
+    color: var(--magenta-neon);
+    border: 1px solid var(--magenta-neon);
+    box-shadow: 0 0 5px rgba(255,0,85,0.3);
 }
 
 .pts-col {
-    color: var(--accent-color);
+    color: var(--cyan-neon);
     font-weight: bold;
+    text-shadow: 0 0 5px rgba(0,240,255,0.5);
 }
 
 .val-col {
@@ -280,13 +361,15 @@ thead th.player-col {
     padding: 0.2rem 0;
     min-width: 44px;
     text-align: center;
-    border-radius: 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
     color: #fff;
     font-weight: 700;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 8px rgba(255,255,255,0.2);
 }
 
+/* Tooltip */
 .custom-tooltip {
     position: relative;
     cursor: help;
@@ -299,17 +382,17 @@ thead th.player-col {
     right: 100%;
     top: 50%;
     transform: translateY(-50%) translateX(-8px);
-    background: rgba(15, 23, 42, 0.95);
-    color: #fff;
-    padding: 0.3rem 0.6rem;
-    border-radius: 6px;
+    background: #0a0c1a;
+    color: var(--cyan-neon);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
     font-size: 0.75rem;
-    font-family: var(--font-body);
-    font-weight: 500;
+    font-family: var(--font-mono);
+    font-weight: 600;
     white-space: nowrap;
     z-index: 100;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border: 1px solid var(--cyan-neon);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
     pointer-events: none;
     animation: fadeInTooltip 0.15s ease-out forwards;
 }
@@ -319,12 +402,12 @@ thead th.player-col {
     to { opacity: 1; transform: translateY(-50%) translateX(-8px); }
 }
 
-/* Skeleton Loading */
+/* Skeleton Loading adapted to Cyberpunk */
 .skeleton {
-    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+    background: linear-gradient(90deg, rgba(0,240,255,0.03) 25%, rgba(0,240,255,0.1) 50%, rgba(0,240,255,0.03) 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 .skeleton-text {
@@ -354,38 +437,59 @@ thead th.player-col {
     animation: fadeIn 0.3s ease-out forwards;
 }
 
-/* Custom Scrollbar */
+/* General Scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
 ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(0, 240, 255, 0.3);
     border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(0, 240, 255, 0.6);
 }
 
 @media (max-width: 768px) {
     body {
         padding: 1rem 0.5rem;
     }
-    
+    .header-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        text-align: center;
+    }
+    header {
+        text-align: center;
+    }
     h1 {
         font-size: 1.8rem;
     }
-    
     h2 {
         font-size: 1.3rem;
     }
-    
+    .controls {
+        width: 100%;
+        justify-content: center;
+    }
     .btn {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.8rem;
+        width: 100%;
+        justify-content: center;
+        padding: 0.8rem;
+        font-size: 0.85rem;
+    }
+    thead th {
+        padding: 0.2rem 0.3rem;
+        font-size: 0.6rem;
+    }
+    tbody td {
+        padding: 0.15rem 0.3rem;
+    }
+    .glass-panel {
+        border-radius: 8px;
     }
 }

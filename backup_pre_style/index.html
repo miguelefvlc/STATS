@@ -5,31 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estadísticas NBA</title>
     <meta name="description" content="Tracker de estadísticas de la NBA. Sigue el rendimiento partido a partido de tus jugadores favoritos.">
-    <!-- Google Fonts: Inter & Share Tech Mono -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <meta name="theme-color" content="#0c0e1c">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0f172a">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.svg">
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-container">
-        <div class="header-section">
-            <header>
-                <h1><span class="gradient-text">STATS</span> TRACKER</h1>
-                <p>PARTIDO A PARTIDO</p>
-            </header>
-            
-            <div class="controls">
-                <button id="refresh-btn-all" class="btn primary">
-                    <svg class="icon refresh-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="23 4 23 10 17 10"></polyline>
-                        <polyline points="1 20 1 14 7 14"></polyline>
-                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                    </svg>
-                    <span>Refrescar</span>
-                </button>
-            </div>
+        <header>
+            <h1><span class="gradient-text">STATS</span> TRACKER</h1>
+            <p>PARTIDO A PARTIDO</p>
+        </header>
+        
+        <div class="controls">
+            <button id="refresh-btn-1" class="btn primary">
+                <svg class="icon refresh-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <span>Refrescar</span>
+            </button>
         </div>
 
         <div class="table-container glass-panel">
@@ -63,10 +61,20 @@
             </table>
         </div>
 
-        <div class="header-section" style="margin-top: 1rem; border-bottom: none; padding-bottom: 0;">
-            <header>
-                <h2><span class="gradient-text">SEGUIMIENTO</span></h2>
-            </header>
+        <!-- SEGUNDA TABLA: SEGUIMIENTO -->
+        <header style="margin-top: 2rem;">
+            <h2><span class="gradient-text">SEGUIMIENTO</span></h2>
+        </header>
+
+        <div class="controls">
+            <button id="refresh-btn-2" class="btn primary">
+                <svg class="icon refresh-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <span>Refrescar Seguimiento</span>
+            </button>
         </div>
 
         <div class="table-container glass-panel">
@@ -101,7 +109,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {

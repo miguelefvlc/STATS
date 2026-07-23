@@ -1,11 +1,11 @@
-const CACHE_NAME = 'nba-stats-v1';
+const CACHE_NAME = 'nba-stats-v2';
 const urlsToCache = [
   './',
   './index.html',
   './style.css',
   './script.js',
   './icon.svg',
-  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap'
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap'
 ];
 
 self.addEventListener('install', event => {

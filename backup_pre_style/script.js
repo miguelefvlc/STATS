@@ -224,21 +224,15 @@ async function fetchPlayerStats(url) {
             val = ratingNum.toFixed(1);
         }
 
-        const formatPct = (val) => {
-            if (!val || val === '-') return '-';
-            const num = parseFloat(val);
-            return isNaN(num) ? val : Math.round(num).toString() + '%';
-        };
-
         return {
             name, imgSrc, fecha, rawDate, isToday, op, resultado,
             min: getStat('MIN'),
             pts, reb, ast, stl, blk, fg,
-            fgPct: formatPct(getStat('FG%')),
+            fgPct: getStat('FG%'),
             pt3: getStat('3PT'),
-            pt3Pct: formatPct(getStat('3P%')),
+            pt3Pct: getStat('3P%'),
             ft,
-            ftPct: formatPct(getStat('FT%')),
+            ftPct: getStat('FT%'),
             pf: getStat('PF'),
             to, val, rating: ratingNum, per36Text,
             error: null
@@ -349,14 +343,10 @@ async function refreshTable(urls, tbodyId, btnId) {
     }
 }
 
-// Helper to refresh all tables
-function refreshAll() {
-    refreshTable(playerUrls1, 'stats-body-1', 'refresh-btn-all');
-    refreshTable(playerUrls2, 'stats-body-2', 'refresh-btn-all');
-}
-
 // Setup Event Listeners
-document.getElementById('refresh-btn-all').addEventListener('click', refreshAll);
+document.getElementById('refresh-btn-1').addEventListener('click', () => refreshTable(playerUrls1, 'stats-body-1', 'refresh-btn-1'));
+document.getElementById('refresh-btn-2').addEventListener('click', () => refreshTable(playerUrls2, 'stats-body-2', 'refresh-btn-2'));
 
 // Initial Load
-refreshAll();
+refreshTable(playerUrls1, 'stats-body-1', 'refresh-btn-1');
+refreshTable(playerUrls2, 'stats-body-2', 'refresh-btn-2');
