@@ -23,78 +23,6 @@ const playerUrls2 = [
     "https://www.espn.com/nba/player/_/id/4684208/brooks-barnhizer"
 ];
 
-// Helper: Format Date
-function formatDate(rawDate) {
-    let fecha = '-';
-    let isToday = false;
-    if (rawDate) {
-        try {
-            const dateObj = new Date(rawDate);
-            if (!isNaN(dateObj.getTime())) {
-                fecha = dateObj.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
-                const today = new Date();
-                if (dateObj.getDate() === today.getDate() && 
-                    dateObj.getMonth() === today.getMonth() && 
-                    dateObj.getFullYear() === today.getFullYear()) {
-                    isToday = true;
-                }
-            }
-        } catch(e) {}
-    }
-    return { fecha, isToday };
-}
-
-// Helper: Calculate Efficiency Rating (Valoración)
-function calculateRating(pts, reb, ast, stl, blk, to, fg, ft, minStr) {
-    if (pts === '-' || reb === '-' || ast === '-' || stl === '-' || blk === '-' || to === '-' || fg === '-' || ft === '-') {
-        return { val: '-', ratingNum: null, per36Text: '' };
-    }
-
-    try {
-        let fgm = 0, fga = 0, ftm = 0, fta = 0;
-        if (fg && fg.includes('-')) {
-            const parts = fg.split('-');
-            fgm = parseInt(parts[0], 10) || 0;
-            fga = parseInt(parts[1], 10) || 0;
-        }
-        if (ft && ft.includes('-')) {
-            const parts = ft.split('-');
-            ftm = parseInt(parts[0], 10) || 0;
-            fta = parseInt(parts[1], 10) || 0;
-        }
-        const missedFG = fga - fgm;
-        const missedFT = fta - ftm;
-        
-        const rawVal = (parseInt(pts, 10) || 0) + (parseInt(reb, 10) || 0) + (parseInt(ast, 10) || 0) + 
-                       (parseInt(stl, 10) || 0) + (parseInt(blk, 10) || 0) - missedFG - missedFT - (parseInt(to, 10) || 0);
-        
-        let minPlayed = 0;
-        if (minStr && minStr !== '-' && minStr.includes(':')) {
-            const parts = minStr.split(':');
-            minPlayed = parseInt(parts[0], 10) + (parseInt(parts[1] || 0, 10) / 60);
-        } else if (minStr && !isNaN(parseInt(minStr, 10))) {
-            minPlayed = parseInt(minStr, 10);
-        }
-        
-        let per36Text = '';
-        if (minPlayed > 0) {
-            const rawPer36 = (rawVal / minPlayed) * 36;
-            let ratingPer36 = (rawPer36 / 35) * 10;
-            ratingPer36 = Math.max(0, Math.min(10, ratingPer36));
-            per36Text = `Valoración por 36': ${ratingPer36.toFixed(1)}`;
-        }
-
-        let rating = (rawVal / 35) * 10;
-        const ratingNum = Math.max(0, Math.min(10, rating));
-        const val = !isNaN(ratingNum) ? ratingNum.toFixed(1) : '-';
-        
-        return { val, ratingNum, per36Text };
-    } catch(e) {
-        console.warn('Error calculating rating', e);
-        return { val: '-', ratingNum: null, per36Text: '' };
-    }
-}
-
 // Initialize the table with skeleton rows
 function renderSkeletons(tbody, count) {
     if (!tbody) return;
@@ -231,9 +159,19 @@ async function fetchPlayerStats(url) {
         if (eventInfo) {
             if (eventInfo.gameDate) {
                 rawDate = eventInfo.gameDate;
-                const parsedDate = formatDate(rawDate);
-                fecha = parsedDate.fecha;
-                isToday = parsedDate.isToday;
+                try {
+                    const dateObj = new Date(rawDate);
+                    if (!isNaN(dateObj.getTime())) {
+                        fecha = dateObj.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
+                        
+                        const today = new Date();
+                        if (dateObj.getDate() === today.getDate() && 
+                            dateObj.getMonth() === today.getMonth() && 
+                            dateObj.getFullYear() === today.getFullYear()) {
+                            isToday = true;
+                        }
+                    }
+                } catch(e) {}
             }
             if (eventInfo.opponent) {
                 op = eventInfo.opponent.abbreviation || '?';
@@ -257,11 +195,53 @@ async function fetchPlayerStats(url) {
         const ft = getStat('FT');
         const to = getStat('TO');
 
-        // Calculate Rating & Per36
-        const calcData = calculateRating(pts, reb, ast, stl, blk, to, fg, ft, getStat('MIN'));
-        const val = calcData.val;
-        const ratingNum = calcData.ratingNum;
-        const per36Text = calcData.per36Text;
+        let val = '-';
+        let ratingNum = null;
+        let per36Text = '';
+        
+        if (pts !== '-' && reb !== '-' && ast !== '-' && stl !== '-' && blk !== '-' && to !== '-' && fg !== '-' && ft !== '-') {
+            try {
+                let fgm = 0, fga = 0, ftm = 0, fta = 0;
+                if (fg && fg.includes('-')) {
+                    const parts = fg.split('-');
+                    fgm = parseInt(parts[0], 10) || 0;
+                    fga = parseInt(parts[1], 10) || 0;
+                }
+                if (ft && ft.includes('-')) {
+                    const parts = ft.split('-');
+                    ftm = parseInt(parts[0], 10) || 0;
+                    fta = parseInt(parts[1], 10) || 0;
+                }
+                const missedFG = fga - fgm;
+                const missedFT = fta - ftm;
+                let rawVal = (parseInt(pts, 10) || 0) + (parseInt(reb, 10) || 0) + (parseInt(ast, 10) || 0) + (parseInt(stl, 10) || 0) + (parseInt(blk, 10) || 0) - missedFG - missedFT - (parseInt(to, 10) || 0);
+                
+                let minPlayed = 0;
+                const minStr = getStat('MIN');
+                if (minStr && minStr !== '-' && minStr.includes(':')) {
+                    const parts = minStr.split(':');
+                    minPlayed = parseInt(parts[0], 10) + (parseInt(parts[1] || 0, 10) / 60);
+                } else if (minStr && !isNaN(parseInt(minStr, 10))) {
+                    minPlayed = parseInt(minStr, 10);
+                }
+                
+                if (minPlayed > 0) {
+                    const rawPer36 = (rawVal / minPlayed) * 36;
+                    let ratingPer36 = (rawPer36 / 35) * 10;
+                    ratingPer36 = Math.max(0, Math.min(10, ratingPer36));
+                    per36Text = `Valoración por 36': ${ratingPer36.toFixed(1)}`;
+                }
+
+                // Escalar sobre 10 (asumiendo que 35 de Eficiencia es un 10 perfecto)
+                let rating = (rawVal / 35) * 10;
+                ratingNum = Math.max(0, Math.min(10, rating)); // Limitar entre 0 y 10
+                if (!isNaN(ratingNum)) {
+                    val = ratingNum.toFixed(1);
+                }
+            } catch(e) {
+                console.warn('Error calculating rating for', name, e);
+            }
+        }
 
         const formatPct = (valStr) => {
             if (!valStr || valStr === '-') return '-';
