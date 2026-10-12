@@ -124,7 +124,7 @@ function renderSkeletons(tbody, count) {
 }
 
 // Funciones de caché
-const CACHE_PREFIX = 'nba_stats_v2_';
+const CACHE_PREFIX = 'nba_stats_v4_';
 const PROFILE_TTL = 7 * 24 * 60 * 60 * 1000; // 7 días
 const GAMELOG_TTL = 5 * 60 * 1000; // 5 minutos
 
@@ -152,6 +152,38 @@ function setCachedData(storage, key, data, ttl) {
     } catch (e) {}
 }
 
+// Helper: Extract the absolute latest game from a gamelog across all seasonTypes and categories
+function extractLatestEvent(gamelog) {
+    if (!gamelog || !Array.isArray(gamelog.seasonTypes)) return null;
+    const eventsDict = gamelog.events || {};
+    const defaultLabels = gamelog.labels || [];
+    const allEvents = [];
+
+    for (const seasonType of gamelog.seasonTypes) {
+        if (!Array.isArray(seasonType.categories)) continue;
+        for (const category of seasonType.categories) {
+            const catLabels = category.labels || defaultLabels;
+            if (!Array.isArray(category.events)) continue;
+            for (const ev of category.events) {
+                const eventInfo = (ev.eventId && eventsDict[ev.eventId]) ? eventsDict[ev.eventId] : null;
+                const gameDate = eventInfo?.gameDate || null;
+                allEvents.push({
+                    event: ev,
+                    eventInfo: eventInfo,
+                    labels: catLabels,
+                    stats: ev.stats || [],
+                    gameDate: gameDate ? new Date(gameDate).getTime() : 0,
+                    rawDate: gameDate
+                });
+            }
+        }
+    }
+
+    if (allEvents.length === 0) return null;
+    allEvents.sort((a, b) => b.gameDate - a.gameDate);
+    return allEvents[0];
+}
+
 // Fetch and parse data for a single player using ESPN's JSON API directly
 async function fetchPlayerStats(url) {
     try {
@@ -161,64 +193,41 @@ async function fetchPlayerStats(url) {
         const playerId = match[1];
 
         const profileKey = `profile_${playerId}`;
-        const gamelogKey = `gamelog_${playerId}`;
-
         let profile = getCachedData(localStorage, profileKey);
+
+        if (!profile) {
+            const profileRes = await fetch(`https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/athletes/${playerId}`);
+            if (!profileRes.ok) throw new Error('Profile fetch failed');
+            profile = await profileRes.json();
+            setCachedData(localStorage, profileKey, profile, PROFILE_TTL);
+        }
+
+        const currentSeasonYear = profile?.season?.year;
+        const gamelogKey = `gamelog_${playerId}_${currentSeasonYear || 'cur'}`;
         let gamelog = getCachedData(sessionStorage, gamelogKey);
 
-        const fetchPromises = [];
-        
-        if (!profile) {
-            fetchPromises.push(
-                fetch(`https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/athletes/${playerId}`)
-                .then(res => { if (!res.ok) throw new Error('Profile fetch failed'); return res.json(); })
-                .then(data => { setCachedData(localStorage, profileKey, data, PROFILE_TTL); return data; })
-            );
-        } else {
-            fetchPromises.push(Promise.resolve(profile));
-        }
-
         if (!gamelog) {
-            fetchPromises.push(
-                fetch(`https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/athletes/${playerId}/gamelog`)
-                .then(res => { if (!res.ok) throw new Error('Gamelog fetch failed'); return res.json(); })
-                .then(data => { setCachedData(sessionStorage, gamelogKey, data, GAMELOG_TTL); return data; })
-            );
-        } else {
-            fetchPromises.push(Promise.resolve(gamelog));
-        }
+            // Only fetch gamelog for the current active season
+            const seasonQuery = currentSeasonYear ? `?season=${currentSeasonYear}` : '';
+            const gamelogRes = await fetch(`https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/athletes/${playerId}/gamelog${seasonQuery}`);
+            if (gamelogRes.ok) {
+                gamelog = await gamelogRes.json();
+            }
 
-        const [finalProfile, finalGamelog] = await Promise.all(fetchPromises);
-        profile = finalProfile;
-        gamelog = finalGamelog;
+            if (gamelog) {
+                setCachedData(sessionStorage, gamelogKey, gamelog, GAMELOG_TTL);
+            }
+        }
 
         // Parse Name and Image
         const name = profile?.athlete?.displayName || 'Jugador Desconocido';
         const imgSrc = profile?.athlete?.headshot?.href || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ccc"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
 
-        // Find stats array and labels array
-        let labels = gamelog?.labels || [];
-        let stats = [];
-        let eventInfo = null;
-
-        // ESPN groups by seasonType (e.g. Regular Season, Postseason)
-        // Find the first seasonType that has valid events
-        if (gamelog?.seasonTypes) {
-            for (const seasonType of gamelog.seasonTypes) {
-                if (!seasonType.categories) continue;
-                for (const category of seasonType.categories) {
-                    if (category.events && category.events.length > 0) {
-                        const event = category.events[0];
-                        stats = event.stats || [];
-                        if (event.eventId && gamelog.events && gamelog.events[event.eventId]) {
-                            eventInfo = gamelog.events[event.eventId];
-                        }
-                        break;
-                    }
-                }
-                if (stats.length > 0) break;
-            }
-        }
+        // Extract latest event chronologically
+        const latestMatch = extractLatestEvent(gamelog);
+        const labels = latestMatch?.labels || gamelog?.labels || [];
+        const stats = latestMatch?.stats || [];
+        const eventInfo = latestMatch?.eventInfo || null;
 
         // Si no hay stats (jugador lesionado o no ha jugado), no lanzamos error,
         // simplemente dejamos que el código continúe y devuelva '-' en todo.
